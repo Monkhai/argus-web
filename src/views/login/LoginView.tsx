@@ -1,11 +1,29 @@
 'use client'
-import { auth } from '@/firebase'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { motion } from 'motion/react'
+import React, { useEffect } from 'react'
 import GoogleButton from 'react-google-button'
+import { motion } from 'motion/react'
+import { auth } from '@/firebase'
+import { useAuth } from '@/providers/AuthProvider'
+import { useRouter } from 'next/navigation'
 
 export default function LoginView() {
   const authProvider = new GoogleAuthProvider()
+  const { user, loading } = useAuth()
+  const router = useRouter()
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace('/home')
+    }
+  }, [loading, router, user])
+
+  if (loading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-transparent" />
+      </div>
+    )
+  }
 
   return (
     <div className="relative text-white flex h-screen w-screen bg-stone-800 flex-col items-center justify-center gap-8 px-8">
