@@ -38,10 +38,10 @@ export function SearchBar() {
   }
 
   return (
-    <section className="flex items-center justify-between w-screen px-10 gap-8">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-4">
-        <div className="relative flex flex-col flex-wrap w-full rounded-lg border border-input bg-background shadow-sm">
-          <div className="relative flex items-center p-2 bg-secondary rounded-t-lg">
+    <section className="flex flex-row items-start justify-between w-full px-10 gap-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full h-[60px]">
+        <div className="flex flex-col flex-wrap w-full bg-background shadow-sm rounded-lg border border-input overflow-hidden">
+          <div className="flex items-center p-2 bg-secondary">
             <div className="text-muted-foreground">
               <Search className="h-5 w-5" />
             </div>
@@ -59,7 +59,7 @@ export function SearchBar() {
             <button
               type="button"
               onClick={() => setIsAdvancedOpen(prev => !prev)}
-              className="absolute right-3 px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronRight
                 className={cn('rotate-0 transition-transform duration-200', {
@@ -76,7 +76,7 @@ export function SearchBar() {
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden bg-background border-t border-input"
+                className="overflow-hidden bg-background border-t border-input rounded-b-lg"
               >
                 <div className="space-y-4 p-4">
                   <TagInput
@@ -120,7 +120,9 @@ export function SearchBar() {
       </form>
       <Dialog>
         <DialogTrigger>
-          <PlusCircle />
+          <div className="h-[60px] w-[60px] flex items-center justify-center">
+            <PlusCircle />
+          </div>
         </DialogTrigger>
         <DialogContent className="!bg-background">
           <DialogHeader>
