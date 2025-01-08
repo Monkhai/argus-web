@@ -1,28 +1,22 @@
-import ResourceForm from '@/components/forms/ResourceForm'
-import { app } from '@/firebase'
-import { getFunctions, httpsCallable } from 'firebase/functions'
+import TweetForm from '@/components/forms/TweetForm'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
-const downloadYoutubeVideoFn = httpsCallable(getFunctions(app), 'download_youtube_video')
 export default function HomeView() {
-  async function downloadYoutubeVideo() {
-    'use server'
-    console.log('downloadYoutubeVideo')
-    try {
-      const url = 'https://www.youtube.com/watch?v=eU_6ZRVOEiQ'
-      const res = await downloadYoutubeVideoFn({ url })
-      console.log(res, 'res')
-    } catch (error) {
-      console.error(error)
-    }
-  }
   return (
-    <div className="min-h-screen bg-stone-800 py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto">
-        <form action={downloadYoutubeVideo}>
-          <button>Download</button>
-        </form>
-        <h1 className="text-2xl font-bold mb-6 text-white px-6">Add New Resource</h1>
-        <ResourceForm />
+        <h1 className="text-2xl font-bold mb-6 text-primary px-6">Add New Tweet</h1>
+        <Dialog>
+          <DialogTrigger>
+            <h1>Add New Tweet</h1>
+          </DialogTrigger>
+          <DialogContent className="!bg-background">
+            <DialogHeader>
+              <DialogTitle>Add New Tweet</DialogTitle>
+            </DialogHeader>
+            <TweetForm />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
