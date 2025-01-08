@@ -1,11 +1,9 @@
 'use client'
-import { useForm, Controller } from 'react-hook-form'
-import { useState } from 'react'
-import { X } from 'lucide-react'
-import { app } from '@/firebase'
-import { getFunctions, httpsCallable } from 'firebase/functions'
-import { useMutation } from '@tanstack/react-query'
 import { useToast } from '@/hooks/use-toast'
+import { createTweet } from '@/queries/tweets/createTweet'
+import { useMutation } from '@tanstack/react-query'
+import { Controller, useForm } from 'react-hook-form'
+import { TagInput } from '../ui/TagInput'
 
 interface ResourceFormData {
   link: string
@@ -13,26 +11,8 @@ interface ResourceFormData {
   tags: string[]
 }
 
-type UserMetadata = {
-  tags: string[]
-  description: string
-}
-
-type CreateTweetDocumentRequest = {
-  url: string
-  userMetadata: UserMetadata
-}
-
-const createTweetFn = httpsCallable<CreateTweetDocumentRequest, { success: boolean }>(getFunctions(app), 'createTweetDocument')
-
-async function createTweet(data: CreateTweetDocumentRequest) {
-  const res = await createTweetFn(data)
-  console.log(res, 'res')
-}
-
 export default function TweetForm() {
   const { toast } = useToast()
-  const [tagInput, setTagInput] = useState('')
   const { control, handleSubmit, watch, setValue } = useForm<ResourceFormData>({
     defaultValues: {
       link: '',
@@ -59,41 +39,6 @@ export default function TweetForm() {
       })
     },
   })
-
-  const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    const lastChar = value[value.length - 1]
-
-    if (lastChar === ' ') {
-      // Get the tag without the space
-      const newTag = value.trim()
-
-      // Only add if it's not empty and not already in the list
-      if (newTag && !tags.includes(newTag)) {
-        setValue('tags', [...tags, newTag])
-      }
-
-      // Clear the input
-      setTagInput('')
-    } else {
-      setTagInput(value)
-    }
-  }
-
-  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Handle backspace when input is empty to remove the last tag
-    if (e.key === 'Backspace' && !tagInput) {
-      e.preventDefault()
-      setValue('tags', tags.slice(0, -1))
-    }
-  }
-
-  const removeTag = (tagToRemove: string) => {
-    setValue(
-      'tags',
-      tags.filter(tag => tag !== tagToRemove)
-    )
-  }
 
   const onSubmit = (data: ResourceFormData) => {
     mutate({
@@ -132,37 +77,7 @@ export default function TweetForm() {
       </div>
 
       {/* Tags Input */}
-      <div className="space-y-2.5">
-        <label htmlFor="tags" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Tags <span className="text-muted-foreground opacity-50">(optional)</span>
-        </label>
-        <div className="flex flex-wrap gap-2 p-2 min-h-[42px] w-full bg-secondary border border-input rounded-lg focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-colors">
-          {tags.map(tag => (
-            <span
-              key={tag}
-              className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-tertiary text-secondary-foreground"
-            >
-              {tag}
-              <button
-                type="button"
-                onClick={() => removeTag(tag)}
-                className="ml-2 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-              >
-                <X size={14} className="hover:text-muted-foreground" />
-              </button>
-            </span>
-          ))}
-          <input
-            type="text"
-            value={tagInput}
-            onChange={handleTagInput}
-            onKeyDown={handleTagKeyDown}
-            className="flex-1 w-full !p-0 !bg-transparent !border-0 !shadow-none text-sm outline-none placeholder:text-muted-foreground"
-            placeholder={tags.length === 0 ? 'Type and use space to add tags' : ''}
-          />
-        </div>
-      </div>
-
+      <TagInput label="Tags" onChange={tags => setValue('tags', tags)} value={tags} placeholder="Type and use space to add tags" />
       {/* Description Input */}
       <div className="space-y-2.5">
         <label htmlFor="description" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
