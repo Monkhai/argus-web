@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import TweetForm from './TweetForm'
 
 interface SearchFormData {
-  query: string
+  prompt: string
   description?: string
   tags: string[]
 }
@@ -22,7 +22,7 @@ export function SearchBar() {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom)
   const { control, handleSubmit, setValue, watch } = useForm<SearchFormData>({
     defaultValues: {
-      query: searchQuery.query,
+      prompt: searchQuery.prompt,
       description: searchQuery.description,
       tags: searchQuery.tags,
     },
@@ -31,7 +31,7 @@ export function SearchBar() {
 
   const onSubmit = (data: SearchFormData) => {
     setSearchQuery({
-      query: data.query,
+      prompt: data.prompt,
       tags: data.tags,
       description: data.description,
     })
@@ -46,7 +46,7 @@ export function SearchBar() {
               <Search className="h-5 w-5" />
             </div>
             <Controller
-              name="query"
+              name="prompt"
               control={control}
               render={({ field }) => (
                 <input
@@ -124,7 +124,7 @@ export function SearchBar() {
             <PlusCircle />
           </div>
         </DialogTrigger>
-        <DialogContent className="!bg-background">
+        <DialogContent aria-describedby={undefined} className="!bg-background">
           <DialogHeader>
             <DialogTitle>Add New Tweet</DialogTitle>
           </DialogHeader>

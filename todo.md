@@ -1,0 +1,4 @@
+- create loading for home view
+- create error for home view
+- when deleteing user, it was not redirecting to login
+- when initially creating user, db might take a second to create user and then the user can not find their resources and gets an error

@@ -4,7 +4,9 @@ export type UserMetadata = {
 }
 
 export const resourceType = ['tweet'] as const
-export type ResourceType = (typeof resourceType)[number]
+export enum ResourceType {
+  TWEET = 'tweet',
+}
 export type ResourceData = {
   type: ResourceType
   resourceId: string
@@ -15,6 +17,7 @@ export type ResourceData = {
   tags: string[]
   description: string
   userId: string
+  link: string
 }
 
 export type ResourceContentForEmbedding = {

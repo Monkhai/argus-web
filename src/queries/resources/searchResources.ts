@@ -32,14 +32,7 @@ export function useSearchTweets() {
 
   return useQuery({
     queryKey: queryKeystore.searchResources(user!.uid, searchQuery),
-    queryFn: () =>
-      searchResources({
-        prompt: searchQuery.query,
-        tags: searchQuery.tags,
-        description: searchQuery.description,
-        authorUsername: searchQuery.authorUsername,
-        type: searchQuery.type,
-      }),
+    queryFn: () => searchResources(searchQuery),
     enabled: !!user,
   })
 }

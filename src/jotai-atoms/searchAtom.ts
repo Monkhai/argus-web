@@ -2,14 +2,14 @@ import { ResourceType } from '@/queries/resources/resourceTypes'
 import { atom } from 'jotai'
 
 export type SearchQuery = {
-  query: string
+  prompt: string
+  authorUsername?: string
   tags?: string[]
   description?: string
-  authorUsername?: string
   type?: ResourceType
 }
 export const searchQueryAtom = atom<SearchQuery>({
-  query: '',
+  prompt: '',
   tags: [],
   description: '',
   authorUsername: '',

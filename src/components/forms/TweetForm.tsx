@@ -1,7 +1,5 @@
 'use client'
-import { useToast } from '@/hooks/use-toast'
-import { createTweet } from '@/queries/resources/tweets/createTweet'
-import { useMutation } from '@tanstack/react-query'
+import { useCreateTweet } from '@/queries/resources/tweets/createTweet'
 import { Controller, useForm } from 'react-hook-form'
 import { TagInput } from '../ui/TagInput'
 
@@ -12,7 +10,6 @@ interface ResourceFormData {
 }
 
 export default function TweetForm() {
-  const { toast } = useToast()
   const { control, handleSubmit, watch, setValue } = useForm<ResourceFormData>({
     defaultValues: {
       link: '',
@@ -22,23 +19,7 @@ export default function TweetForm() {
   })
   const tags = watch('tags')
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: createTweet,
-    onSuccess: () => {
-      toast({
-        title: 'Success',
-        description: 'Tweet has been created successfully.',
-        className: 'border border-emerald-500 dark:border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/10 text-white ',
-      })
-    },
-    onError: error => {
-      toast({
-        title: 'Error creating tweet',
-        description: error.message,
-        className: 'border border-red-500 dark:border-red-500 bg-red-500/10 dark:bg-red-500/10 text-white ',
-      })
-    },
-  })
+  const { mutate, isPending } = useCreateTweet()
 
   const onSubmit = (data: ResourceFormData) => {
     mutate({
