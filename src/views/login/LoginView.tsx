@@ -26,7 +26,7 @@ export default function LoginView() {
   }
 
   return (
-    <div className="relative text-white flex h-screen w-screen bg-stone-800 flex-col items-center justify-center gap-8 px-8">
+    <div className="relative text-white flex h-screen w-screen flex-col items-center justify-center gap-8 px-8">
       <div className="relative flex flex-col items-center gap-2">
         <motion.img
           initial={{ opacity: 0, bottom: -50, scale: 0.5 }}

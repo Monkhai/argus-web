@@ -1,9 +1,5 @@
-import { SearchBar } from '@/components/forms/SearchBar'
+import HomeViewUI from './HomeViewUI'
 
 export default function HomeView() {
-  return (
-    <div className="min-h-screen bg-background py-8">
-      <SearchBar />
-    </div>
-  )
+  return <HomeViewUI />
 }

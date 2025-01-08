@@ -1,6 +1,6 @@
 'use client'
 import { useToast } from '@/hooks/use-toast'
-import { createTweet } from '@/queries/tweets/createTweet'
+import { createTweet } from '@/queries/resources/tweets/createTweet'
 import { useMutation } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { TagInput } from '../ui/TagInput'

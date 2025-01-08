@@ -1,5 +1,6 @@
 import { SearchQuery } from '@/jotai-atoms/searchAtom'
 
 export const queryKeystore = {
-  tweets: (userId: string, searchQuery: SearchQuery) => [userId, 'tweets', searchQuery],
+  searchResources: (userId: string, searchQuery: SearchQuery) => [userId, 'searchResources', searchQuery],
+  recentResources: (userId: string, length: number) => [userId, 'recentResources', length],
 }

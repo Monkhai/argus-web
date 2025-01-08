@@ -1,7 +1,7 @@
 'use client'
 
 import { TagInput } from '@/components/ui/TagInput'
-import { searchAtom } from '@/jotai-atoms/searchAtom'
+import { searchQueryAtom } from '@/jotai-atoms/searchAtom'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAtom } from 'jotai'
@@ -19,7 +19,7 @@ interface SearchFormData {
 
 export function SearchBar() {
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useAtom(searchAtom)
+  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom)
   const { control, handleSubmit, setValue, watch } = useForm<SearchFormData>({
     defaultValues: {
       query: searchQuery.query,
@@ -38,7 +38,7 @@ export function SearchBar() {
   }
 
   return (
-    <section className="flex flex-row items-start justify-between w-full px-10 gap-8">
+    <section className="flex flex-row items-start justify-between w-full px-10 gap-4 my-8">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full h-[60px]">
         <div className="flex flex-col flex-wrap w-full bg-background shadow-sm rounded-lg border border-input overflow-hidden">
           <div className="flex items-center p-2 bg-secondary">
