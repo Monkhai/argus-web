@@ -7,7 +7,7 @@ interface Props {
 
 export default function HomeViewUI({ resources }: Props) {
   return (
-    <div className="h-full w-full px-4 py-6 sm:px-6 lg:px-8">
+    <div className="h-full overflow-y-auto w-full px-4 py-6 sm:px-6 lg:px-8">
       <ResourceGrid resources={resources} />
     </div>
   )

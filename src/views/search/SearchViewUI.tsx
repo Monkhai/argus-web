@@ -7,7 +7,7 @@ interface Props {
 
 export default function SearchViewUI({ resources }: Props) {
   return (
-    <div className="h-full overflow-y-auto px-10">
+    <div className="h-full overflow-y-auto w-full px-4 py-6 sm:px-6 lg:px-8">
       <ResourceGrid resources={resources} />
     </div>
   )
