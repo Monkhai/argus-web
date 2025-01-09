@@ -1,10 +1,11 @@
 import { functions } from '@/firebase'
-import { useSearchQuery } from '@/jotai-atoms/searchAtom'
 import { useAuth } from '@/providers/AuthProvider'
 import { useQuery } from '@tanstack/react-query'
 import { httpsCallable } from 'firebase/functions'
 import { queryKeystore } from '../queryKeystore'
 import { ResourceData, ResourceType } from './resourceTypes'
+import { useAtom } from 'jotai'
+import { searchQueryAtom } from '@/jotai-atoms/searchAtom'
 
 type SearchResourcesRequest = {
   prompt: string
@@ -26,12 +27,7 @@ export async function searchResources(data: SearchResourcesRequest) {
 }
 
 export function useSearchResources() {
-  const { prompt, description, tags } = useSearchQuery()
-  const searchQuery: SearchResourcesRequest = {
-    prompt,
-    description,
-    tags,
-  }
+  const [searchQuery] = useAtom(searchQueryAtom)
   const { user } = useAuth()
 
   return useQuery({

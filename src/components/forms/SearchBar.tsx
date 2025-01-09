@@ -1,7 +1,7 @@
 'use client'
 
+import Image from 'next/image'
 import { TagInput } from '@/components/ui/TagInput'
-import { useSearchQuery } from '@/jotai-atoms/searchAtom'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronRight, Search } from 'lucide-react'
@@ -10,24 +10,22 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { NewResourceDropdown } from '../dropdowns/NewResourceDropdown'
 import { Button } from '../ui/button'
-
-interface SearchFormData {
-  prompt: string
-  description?: string
-  tags: string[]
-}
+import Link from 'next/link'
+import { useAtom } from 'jotai'
+import { SearchFormData, searchQueryAtom, useSyncSearchParams } from '@/jotai-atoms/searchAtom'
 
 export function SearchBar() {
   const router = useRouter()
-  const { prompt, description, tags } = useSearchQuery()
+  const [searchQuery] = useAtom(searchQueryAtom)
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
   const { control, handleSubmit, setValue, watch } = useForm<SearchFormData>({
     defaultValues: {
-      prompt,
-      description,
-      tags,
+      prompt: searchQuery.prompt,
+      description: searchQuery.description,
+      tags: searchQuery.tags,
     },
   })
+  useSyncSearchParams(setValue)
 
   const onSubmit = (data: SearchFormData) => {
     if (!isAdvancedOpen) {
@@ -46,6 +44,9 @@ export function SearchBar() {
 
   return (
     <section className="z-50 flex flex-row items-start justify-between w-full px-10 gap-4 my-8">
+      <Link href={'/home'} className="h-[60px] w-[60px] flex items-center justify-center">
+        <Image src="/logo.png" alt="logo" width={40} height={40} />
+      </Link>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full h-[60px]">
         <div className="flex flex-col flex-wrap w-full bg-background shadow-sm rounded-lg border border-input overflow-hidden">
           <div className="flex items-center p-2 px-4 bg-secondary">

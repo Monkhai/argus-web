@@ -11,6 +11,7 @@ interface Props {
 }
 
 export function ResourceCardUI({ resource }: Props) {
+  console.log(resource.url)
   return (
     <Card className="w-full sm:w-[350px] h-[250px]">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="group overflow-hidden h-full flex flex-col">

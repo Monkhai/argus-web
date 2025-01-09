@@ -1,6 +1,5 @@
-import React from 'react'
+import ResourceGrid from '@/components/resources/ResoucesGrid/ResourceGrid'
 import { ResourceData } from '@/queries/resources/resourceTypes'
-import ResourceCard from '@/components/cards/ResourceCard/ResourceCard'
 
 interface Props {
   resources: ResourceData[]
@@ -9,9 +8,7 @@ interface Props {
 export default function SearchViewUI({ resources }: Props) {
   return (
     <div className="h-full overflow-y-auto px-10">
-      {resources.map(resource => (
-        <ResourceCard key={resource.resourceId} resource={resource} />
-      ))}
+      <ResourceGrid resources={resources} />
     </div>
   )
 }
