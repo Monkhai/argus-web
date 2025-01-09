@@ -7,7 +7,7 @@ export default function Page() {
   if (loading) {
     console.log('loading')
     return (
-      <div className="flex h-screen w-screen items-center justify-center">
+      <div className="flex h-dvh w-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-transparent" />
       </div>
     )

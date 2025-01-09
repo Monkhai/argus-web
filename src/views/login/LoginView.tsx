@@ -19,14 +19,14 @@ export default function LoginView() {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center">
+      <div className="flex h-dvh w-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-transparent" />
       </div>
     )
   }
 
   return (
-    <div className="relative text-white flex h-screen w-screen flex-col items-center justify-center gap-8 px-8">
+    <div className="relative text-white flex h-dvh w-screen flex-col items-center justify-center gap-8 px-8">
       <div className="relative flex flex-col items-center gap-2">
         <motion.img
           initial={{ opacity: 0, bottom: -50, scale: 0.5 }}
