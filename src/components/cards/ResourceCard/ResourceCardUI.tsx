@@ -22,7 +22,7 @@ export function ResourceCardUI({ resource }: Props) {
             </div>
           </div>
           <a
-            href={resource.link}
+            href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full p-2 text-muted-foreground opacity-0 transition-opacity cursor-pointer hover:bg-muted group-hover:opacity-100"

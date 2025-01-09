@@ -1,14 +1,15 @@
 'use client'
 
 import { TagInput } from '@/components/ui/TagInput'
-import { searchQueryAtom } from '@/jotai-atoms/searchAtom'
+import { useSearchQuery } from '@/jotai-atoms/searchAtom'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useAtom } from 'jotai'
 import { ChevronRight, Search } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { NewResourceDropdown } from '../dropdowns/NewResourceDropdown'
+import { Button } from '../ui/button'
 
 interface SearchFormData {
   prompt: string
@@ -17,31 +18,38 @@ interface SearchFormData {
 }
 
 export function SearchBar() {
+  const router = useRouter()
+  const { prompt, description, tags } = useSearchQuery()
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom)
   const { control, handleSubmit, setValue, watch } = useForm<SearchFormData>({
     defaultValues: {
-      prompt: searchQuery.prompt,
-      description: searchQuery.description,
-      tags: searchQuery.tags,
+      prompt,
+      description,
+      tags,
     },
   })
-  const tags = watch('tags')
 
   const onSubmit = (data: SearchFormData) => {
-    setSearchQuery({
-      prompt: data.prompt,
-      tags: data.tags,
-      description: data.description,
-    })
+    if (!isAdvancedOpen) {
+      router.push(`/search?prompt=${data.prompt}`)
+      setValue('prompt', data.prompt)
+      setValue('tags', [])
+      setValue('description', '')
+      return
+    }
+    router.push(`/search?prompt=${data.prompt}&tags=${encodeURIComponent(JSON.stringify(data.tags))}&description=${data.description}`)
+    setIsAdvancedOpen(false)
+    setValue('prompt', data.prompt)
+    setValue('tags', data.tags || [])
+    setValue('description', data.description || '')
   }
 
   return (
-    <section className="flex flex-row items-start justify-between w-full px-10 gap-4 my-8">
+    <section className="z-50 flex flex-row items-start justify-between w-full px-10 gap-4 my-8">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full h-[60px]">
         <div className="flex flex-col flex-wrap w-full bg-background shadow-sm rounded-lg border border-input overflow-hidden">
-          <div className="flex items-center p-2 bg-secondary">
-            <div className="text-muted-foreground">
+          <div className="flex items-center p-2 px-4 bg-secondary">
+            <div className="text-muted-foreground w-5 h-5 flex justify-center items-center">
               <Search className="h-5 w-5" />
             </div>
             <Controller
@@ -50,18 +58,18 @@ export function SearchBar() {
               render={({ field }) => (
                 <input
                   {...field}
-                  className="w-full pl-10 pr-12 !bg-transparent !border-none !shadow-none !ring-0 focus-visible:ring-0"
-                  placeholder="Search tweets..."
+                  className="w-full !bg-transparent !border-none !shadow-none!ring-0 focus-visible:ring-0"
+                  placeholder="Search resources..."
                 />
               )}
             />
             <button
               type="button"
               onClick={() => setIsAdvancedOpen(prev => !prev)}
-              className="px-3 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="h-5 w-5 flex justify-center items-center text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronRight
-                className={cn('rotate-0 transition-transform duration-200', {
+                className={cn('rotate-0 transition-transform duration-200 h-5 w-5', {
                   'rotate-90': isAdvancedOpen,
                 })}
               />
@@ -81,8 +89,8 @@ export function SearchBar() {
                   <TagInput
                     label="Tags"
                     onChange={tags => setValue('tags', tags)}
-                    value={tags}
                     placeholder="Type and use space to add tags"
+                    value={watch('tags')}
                   />
 
                   {/* Description Input */}
@@ -110,6 +118,12 @@ export function SearchBar() {
                         </div>
                       )}
                     />
+
+                    <div className="flex justify-end">
+                      <Button color="primary" type="submit">
+                        Search
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </motion.div>

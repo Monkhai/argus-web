@@ -5,5 +5,9 @@ interface Props {
   resource: ResourceData
 }
 export default function ResourceCard({ resource }: Props) {
-  return <ResourceCardUI resource={resource} />
+  return (
+    <>
+      <ResourceCardUI resource={resource} />
+    </>
+  )
 }
