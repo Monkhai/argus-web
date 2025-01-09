@@ -5,11 +5,10 @@ import { searchQueryAtom } from '@/jotai-atoms/searchAtom'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAtom } from 'jotai'
-import { ChevronRight, PlusCircle, Search } from 'lucide-react'
+import { ChevronRight, Search } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
-import TweetForm from './TweetForm'
+import { NewResourceDropdown } from '../dropdowns/NewResourceDropdown'
 
 interface SearchFormData {
   prompt: string
@@ -118,19 +117,8 @@ export function SearchBar() {
           </AnimatePresence>
         </div>
       </form>
-      <Dialog>
-        <DialogTrigger>
-          <div className="h-[60px] w-[60px] flex items-center justify-center">
-            <PlusCircle />
-          </div>
-        </DialogTrigger>
-        <DialogContent aria-describedby={undefined} className="!bg-background">
-          <DialogHeader>
-            <DialogTitle>Add New Tweet</DialogTitle>
-          </DialogHeader>
-          <TweetForm />
-        </DialogContent>
-      </Dialog>
+
+      <NewResourceDropdown />
     </section>
   )
 }
