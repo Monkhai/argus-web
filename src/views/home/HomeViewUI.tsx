@@ -1,5 +1,6 @@
 import ResourceGrid from "@/components/resources/ResoucesGrid/ResourceGrid";
 import { ResourceData } from "@/queries/resources/resourceTypes";
+import View from "@/shared/containers/View";
 
 interface Props {
   resources: ResourceData[];
@@ -7,8 +8,8 @@ interface Props {
 
 export default function HomeViewUI({ resources }: Props) {
   return (
-    <div className="h-full w-full overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
+    <View>
       <ResourceGrid resources={resources} />
-    </div>
+    </View>
   );
 }

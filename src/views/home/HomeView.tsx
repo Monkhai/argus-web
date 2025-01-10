@@ -1,14 +1,17 @@
-'use client'
+"use client";
 
-import { useGetRecentResources } from '@/queries/resources/getRecentResrouces'
-import HomeViewUI from './HomeViewUI'
+import { useGetRecentResources } from "@/queries/resources/getRecentResrouces";
+import HomeViewUI from "./HomeViewUI";
+import HomeViewLoader from "./components/HomeViewLoader";
 
 export default function HomeView() {
-  const { data, isLoading, error } = useGetRecentResources()
+  const { data, isLoading, error } = useGetRecentResources();
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) {
+    return <HomeViewLoader />;
+  }
 
-  if (!data || error) return <div>No data</div>
+  if (!data || error) return <div>No data</div>;
 
-  return <HomeViewUI resources={data} />
+  return <HomeViewUI resources={data} />;
 }
