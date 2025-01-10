@@ -2,6 +2,7 @@
 import { useCreateTweet } from '@/queries/resources/tweets/createTweet'
 import { Controller, useForm } from 'react-hook-form'
 import { TagInput } from '../ui/TagInput'
+import { useEffect } from 'react'
 
 interface ResourceFormData {
   link: string
@@ -19,7 +20,13 @@ export default function TweetForm() {
   })
   const tags = watch('tags')
 
-  const { mutate, isPending } = useCreateTweet()
+  const { mutate, isPending, isSuccess, reset } = useCreateTweet()
+
+  useEffect(() => {
+    if (isSuccess) {
+      reset()
+    }
+  }, [isSuccess, reset])
 
   const onSubmit = (data: ResourceFormData) => {
     mutate({

@@ -43,8 +43,8 @@ export function SearchBar() {
   }
 
   return (
-    <section className="z-50 flex flex-row items-start justify-between w-full px-10 gap-4 my-8">
-      <Link href={'/home'} className="h-[60px] w-[60px] flex items-center justify-center">
+    <section className="z-50 flex flex-row items-start justify-between w-full px-6 gap-4 my-8 sticky top-0">
+      <Link href={'/home'} className="h-[60px] !w-[60px] flex-shrink-0 flex items-center justify-center">
         <Image src="/logo.png" alt="logo" className="object-contain" width={40} height={40} />
       </Link>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full h-[60px]">
@@ -86,7 +86,7 @@ export function SearchBar() {
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden bg-background border-t border-input rounded-b-lg"
               >
-                <div className="space-y-4 p-4">
+                <div className="space-y-4 p-4 ">
                   <TagInput
                     label="Tags"
                     onChange={tags => setValue('tags', tags)}

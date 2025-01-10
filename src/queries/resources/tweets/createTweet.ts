@@ -5,11 +5,11 @@ import { queryClient } from '@/providers/QueryProvider'
 import { queryKeystore } from '@/queries/queryKeystore'
 import { useMutation } from '@tanstack/react-query'
 import { httpsCallable } from 'firebase/functions'
-import { UserMetadata } from '../resourceTypes'
+import { ResourceMetadata } from '../resourceTypes'
 
 type CreateTweetDocumentRequest = {
   url: string
-  userMetadata: UserMetadata
+  userMetadata: ResourceMetadata
 }
 
 export const createTweetFn = httpsCallable<CreateTweetDocumentRequest, { success: boolean }>(functions, 'createTweetDocument')
