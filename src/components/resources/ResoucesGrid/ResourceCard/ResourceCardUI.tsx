@@ -8,14 +8,15 @@ import { ExternalLink } from 'lucide-react'
 
 interface Props {
   resource: ResourceData
+  index: number
 }
 
-export function ResourceCardUI({ resource }: Props) {
+export function ResourceCardUI({ resource, index }: Props) {
   console.log(resource.url)
   return (
-    <Card className="w-full sm:w-[350px] h-[250px]">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="group overflow-hidden h-full flex flex-col">
-        <CardHeader className="flex flex-row items-start justify-between space-y-0 flex-shrink-0">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
+      <Card className="group w-rull sm:w-[350px] h-[250px] flex flex-col">
+        <CardHeader className="flex flex-row items-start justify-between space-y-0 pt-2 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
               <span className="text-sm font-medium">@{resource.authorUsername}</span>
@@ -31,16 +32,14 @@ export function ResourceCardUI({ resource }: Props) {
             <ExternalLink className="h-4 w-4" />
           </a>
         </CardHeader>
-
-        <CardContent className="flex-grow">
+        <CardContent className="flex-1">
           <div className="space-y-2">
             <h3 className="leading-tight tracking-tight line-clamp-3">{resource.text}</h3>
             {resource.description && <p className="text-sm text-muted-foreground line-clamp-2">{resource.description}</p>}
           </div>
         </CardContent>
-
-        <CardFooter className="flex justify-between flex-shrink-0">
-          <div className="flex flex-wrap gap-2">
+        <CardFooter className="flex p-3 !items-center justify-start">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             {resource.tags.map((tag: string) => (
               <span
                 key={tag}
@@ -51,7 +50,7 @@ export function ResourceCardUI({ resource }: Props) {
             ))}
           </div>
         </CardFooter>
-      </motion.div>
-    </Card>
+      </Card>
+    </motion.div>
   )
 }

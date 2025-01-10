@@ -45,7 +45,7 @@ export function SearchBar() {
   return (
     <section className="z-50 flex flex-row items-start justify-between w-full px-10 gap-4 my-8">
       <Link href={'/home'} className="h-[60px] w-[60px] flex items-center justify-center">
-        <Image src="/logo.png" alt="logo" width={40} height={40} />
+        <Image src="/logo.png" alt="logo" className="object-contain" width={40} height={40} />
       </Link>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full h-[60px]">
         <div className="flex flex-col flex-wrap w-full bg-background shadow-sm rounded-lg border border-input overflow-hidden">
@@ -59,7 +59,7 @@ export function SearchBar() {
               render={({ field }) => (
                 <input
                   {...field}
-                  className="w-full !bg-transparent !border-none !shadow-none!ring-0 focus-visible:ring-0"
+                  className="w-full !bg-transparent !border-none !shadow-none !ring-0 focus-visible:ring-0"
                   placeholder="Search resources..."
                 />
               )}
