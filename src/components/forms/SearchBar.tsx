@@ -1,56 +1,75 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { TagInput } from '@/components/ui/TagInput'
-import { cn } from '@/lib/utils'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronRight, Search } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { NewResourceDropdown } from '../dropdowns/NewResourceDropdown'
-import { Button } from '../ui/button'
-import Link from 'next/link'
-import { useAtom } from 'jotai'
-import { SearchFormData, searchQueryAtom, useSyncSearchParams } from '@/jotai-atoms/searchAtom'
+import { TagInput } from "@/components/ui/TagInput";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import {
+  SearchFormData,
+  searchQueryAtom,
+  useSyncSearchParams,
+} from "@/jotai-atoms/searchAtom";
+import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { useAtom } from "jotai";
+import { ChevronRight, Search } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { NewResourceDropdown } from "../dropdowns/NewResourceDropdown";
+import { Button } from "../ui/button";
 
 export function SearchBar() {
-  const router = useRouter()
-  const [searchQuery] = useAtom(searchQueryAtom)
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false)
+  const router = useRouter();
+  const isMobile = useIsMobile();
+  const [searchQuery] = useAtom(searchQueryAtom);
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const { control, handleSubmit, setValue, watch } = useForm<SearchFormData>({
     defaultValues: {
       prompt: searchQuery.prompt,
       description: searchQuery.description,
       tags: searchQuery.tags,
     },
-  })
-  useSyncSearchParams(setValue)
+  });
+  useSyncSearchParams(setValue);
 
   const onSubmit = (data: SearchFormData) => {
     if (!isAdvancedOpen) {
-      router.push(`/search?prompt=${data.prompt}`)
-      setValue('prompt', data.prompt)
-      setValue('tags', [])
-      setValue('description', '')
-      return
+      router.push(`/search?prompt=${data.prompt}`);
+      setValue("prompt", data.prompt);
+      setValue("tags", []);
+      setValue("description", "");
+      return;
     }
-    router.push(`/search?prompt=${data.prompt}&tags=${encodeURIComponent(JSON.stringify(data.tags))}&description=${data.description}`)
-    setIsAdvancedOpen(false)
-    setValue('prompt', data.prompt)
-    setValue('tags', data.tags || [])
-    setValue('description', data.description || '')
-  }
+    router.push(
+      `/search?prompt=${data.prompt}&tags=${encodeURIComponent(JSON.stringify(data.tags))}&description=${data.description}`,
+    );
+    setIsAdvancedOpen(false);
+    setValue("prompt", data.prompt);
+    setValue("tags", data.tags || []);
+    setValue("description", data.description || "");
+  };
 
   return (
-    <section className="z-50 flex flex-row items-start justify-between w-full px-6 gap-4 my-8 sticky top-0">
-      <Link href={'/home'} className="h-[60px] !w-[60px] flex-shrink-0 flex items-center justify-center">
-        <Image src="/logo.png" alt="logo" className="object-contain" width={40} height={40} />
-      </Link>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full h-[60px]">
-        <div className="flex flex-col flex-wrap w-full bg-background shadow-sm rounded-lg border border-input overflow-hidden">
-          <div className="flex items-center p-2 px-4 bg-secondary">
-            <div className="text-muted-foreground w-5 h-5 flex justify-center items-center">
+    <section className="sticky top-0 z-50 my-8 flex w-full flex-row items-start justify-between gap-4 px-6">
+      {!isMobile && (
+        <Link
+          href={"/home"}
+          className="flex h-[60px] !w-[60px] flex-shrink-0 items-center justify-center"
+        >
+          <Image
+            src="/logo.png"
+            alt="logo"
+            className="object-contain"
+            width={40}
+            height={40}
+          />
+        </Link>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)} className="h-[60px] w-full">
+        <div className="flex w-full flex-col flex-wrap overflow-hidden rounded-lg border border-input bg-background shadow-sm">
+          <div className="flex items-center bg-secondary p-2 px-4">
+            <div className="flex h-5 w-5 items-center justify-center text-muted-foreground">
               <Search className="h-5 w-5" />
             </div>
             <Controller
@@ -59,20 +78,23 @@ export function SearchBar() {
               render={({ field }) => (
                 <input
                   {...field}
-                  className="w-full !bg-transparent !border-none !shadow-none !ring-0 focus-visible:ring-0"
+                  className="w-full !border-none !bg-transparent !shadow-none !ring-0 focus-visible:ring-0"
                   placeholder="Search resources..."
                 />
               )}
             />
             <button
               type="button"
-              onClick={() => setIsAdvancedOpen(prev => !prev)}
-              className="h-5 w-5 flex justify-center items-center text-xs text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setIsAdvancedOpen((prev) => !prev)}
+              className="flex h-5 w-5 items-center justify-center text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
               <ChevronRight
-                className={cn('rotate-0 transition-transform duration-200 h-5 w-5', {
-                  'rotate-90': isAdvancedOpen,
-                })}
+                className={cn(
+                  "h-5 w-5 rotate-0 transition-transform duration-200",
+                  {
+                    "rotate-90": isAdvancedOpen,
+                  },
+                )}
               />
             </button>
           </div>
@@ -81,17 +103,17 @@ export function SearchBar() {
             {isAdvancedOpen && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
+                animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden bg-background border-t border-input rounded-b-lg"
+                className="overflow-hidden rounded-b-lg border-t border-input bg-background"
               >
-                <div className="space-y-4 p-4 ">
+                <div className="space-y-4 p-4">
                   <TagInput
                     label="Tags"
-                    onChange={tags => setValue('tags', tags)}
+                    onChange={(tags) => setValue("tags", tags)}
                     placeholder="Type and use space to add tags"
-                    value={watch('tags')}
+                    value={watch("tags")}
                   />
 
                   {/* Description Input */}
@@ -112,10 +134,14 @@ export function SearchBar() {
                             {...field}
                             id="description"
                             rows={4}
-                            className="w-full resize-none min-h-[120px]"
+                            className="min-h-[120px] w-full resize-none"
                             placeholder="Add a description of the tweet to help with search it later"
                           />
-                          {error && <p className="text-sm font-medium text-destructive">{error.message}</p>}
+                          {error && (
+                            <p className="text-sm font-medium text-destructive">
+                              {error.message}
+                            </p>
+                          )}
                         </div>
                       )}
                     />
@@ -135,5 +161,5 @@ export function SearchBar() {
 
       <NewResourceDropdown />
     </section>
-  )
+  );
 }

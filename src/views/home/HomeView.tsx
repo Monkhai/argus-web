@@ -12,6 +12,7 @@ export default function HomeView() {
   }
 
   if (!data || error) return <div>No data</div>;
+  console.log(data);
 
   return <HomeViewUI resources={data} />;
 }

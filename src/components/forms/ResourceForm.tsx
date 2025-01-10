@@ -11,6 +11,7 @@ export const emptyResourceFormData: ResourceFormData = {
 
 const labelMap: Record<ResourceType, string> = {
   [ResourceType.TWEET]: "Tweet Link",
+  [ResourceType.ARTICLE]: "Article Link",
 };
 
 export interface ResourceFormData {

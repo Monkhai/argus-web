@@ -17,7 +17,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { ResourceData } from "@/queries/resources/resourceTypes";
+import {
+  ResourceData,
+  ResourceType,
+  TweetData,
+} from "@/queries/resources/resourceTypes";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { ExternalLink, Loader2, MoreHorizontal } from "lucide-react";
@@ -51,9 +55,11 @@ export function ResourceCardUI({
         <CardHeader className="flex flex-shrink-0 flex-row items-start justify-between space-y-0 p-3 pt-2">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
-              <span className="text-sm font-medium">
-                @{resource.authorUsername}
-              </span>
+              {resource.type === ResourceType.TWEET && (
+                <span className="text-sm font-medium">
+                  @{(resource.data as TweetData).authorUsername}
+                </span>
+              )}
               <time className="text-xs text-muted-foreground">
                 {format(new Date(resource.createdAt), "MMM d, yyyy")}
               </time>
@@ -76,7 +82,7 @@ export function ResourceCardUI({
         <CardContent className="flex-1">
           <div className="space-y-2">
             <h3 className="line-clamp-3 leading-tight tracking-tight">
-              {resource.text}
+              {resource.data.text}
             </h3>
             {resource.description && (
               <p className="line-clamp-2 text-sm text-muted-foreground">

@@ -78,22 +78,30 @@ export function NewResourceDropdown() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem
-                onSelect={() => setResourceType(ResourceType.TWEET)}
-              >
-                <DialogTrigger>New Tweet</DialogTrigger>
-              </DropdownMenuItem>
+              {Object.values(ResourceType).map((type) => (
+                <DropdownMenuItem
+                  key={type}
+                  onSelect={() => setResourceType(type)}
+                >
+                  <DialogTrigger className="w-full text-left">
+                    {type}
+                  </DialogTrigger>
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
 
           <DialogContent>
-            {DialogHeaderMap[resourceType]}
-            {ContentMap[resourceType]({
-              isPending,
-              isSuccess,
-              reset,
-              onSubmit: handleSubmit,
-            })}
+            <DialogHeader>
+              <DialogTitle>Add New {labelMap[resourceType]}</DialogTitle>
+            </DialogHeader>
+            <ResourceForm
+              resourceType={resourceType}
+              isPending={isPending}
+              isSuccess={isSuccess}
+              reset={reset}
+              onSubmit={handleSubmit}
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -122,53 +130,24 @@ export function NewResourceDropdown() {
         </DropdownMenu>
 
         <DrawerContent className="px-6 pb-6">
-          {DrawerHeaderMap[resourceType]}
-          {ContentMap[resourceType]({
-            isPending,
-            isSuccess,
-            reset,
-            onSubmit: handleSubmit,
-          })}
+          <DrawerHeader draggable>
+            <DrawerTitle>Add New {labelMap[resourceType]}</DrawerTitle>
+          </DrawerHeader>
+          <ResourceForm
+            resourceType={resourceType}
+            isPending={isPending}
+            isSuccess={isSuccess}
+            reset={reset}
+            onSubmit={handleSubmit}
+          />
         </DrawerContent>
       </Drawer>
     </div>
   );
 }
 
-const DrawerHeaderMap = {
-  [ResourceType.TWEET]: (
-    <DrawerHeader draggable>
-      <DrawerTitle>Add New Tweet</DrawerTitle>
-    </DrawerHeader>
-  ),
-};
-
-const DialogHeaderMap = {
-  [ResourceType.TWEET]: (
-    <DialogHeader>
-      <DialogTitle>Add New Tweet</DialogTitle>
-    </DialogHeader>
-  ),
-};
-
-const ContentMap = {
-  [ResourceType.TWEET]: ({
-    isPending,
-    isSuccess,
-    onSubmit,
-    reset,
-  }: {
-    isPending: boolean;
-    isSuccess: boolean;
-    reset: () => void;
-    onSubmit: (data: ResourceFormData) => void;
-  }) => (
-    <ResourceForm
-      resourceType={ResourceType.TWEET}
-      isPending={isPending}
-      isSuccess={isSuccess}
-      reset={reset}
-      onSubmit={onSubmit}
-    />
-  ),
+// TODO: share this. you are using it in Resource Form as well!
+const labelMap: Record<ResourceType, string> = {
+  [ResourceType.TWEET]: "Tweet",
+  [ResourceType.ARTICLE]: "Article",
 };
