@@ -5,6 +5,7 @@ import { ResourceType } from "@/queries/resources/resourceTypes";
 
 export const emptyResourceFormData: ResourceFormData = {
   link: "",
+  title: "",
   description: "",
   tags: [],
 };
@@ -16,6 +17,7 @@ const labelMap: Record<ResourceType, string> = {
 
 export interface ResourceFormData {
   link: string;
+  title: string;
   description: string;
   tags: string[];
 }
@@ -24,6 +26,7 @@ interface Props {
   initialValues?: ResourceFormData;
   isPending: boolean;
   isSuccess: boolean;
+  disableUrl?: boolean;
 
   reset: () => void;
   onSubmit: (data: ResourceFormData) => void;
@@ -36,6 +39,7 @@ export default function ResourceForm({
   isPending,
   isSuccess,
   reset,
+  disableUrl = false,
 }: Props) {
   const {
     control,
@@ -58,42 +62,71 @@ export default function ResourceForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
-      {/* Link Input */}
-      <div className="space-y-2.5">
-        <label
-          htmlFor="link"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          {labelMap[resourceType]}
-        </label>
-        <Controller
-          name="link"
-          control={control}
-          rules={{
-            required: "Link is required",
-            pattern: {
-              value: /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/,
-              message: "Please enter a valid URL",
-            },
-          }}
-          render={({ field, fieldState: { error } }) => (
-            <div className="space-y-2">
-              <input
-                {...field}
-                type="url"
-                id="link"
-                className="w-full"
-                placeholder="https://example.com"
-              />
-              {error && (
-                <p className="text-sm font-medium text-destructive">
-                  {error.message}
-                </p>
-              )}
-            </div>
-          )}
-        />
-      </div>
+      {!disableUrl && (
+        <div className="space-y-2.5">
+          <label
+            htmlFor="link"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {labelMap[resourceType]}
+          </label>
+          <Controller
+            name="link"
+            control={control}
+            rules={{
+              required: "Link is required",
+              pattern: {
+                value: /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/,
+                message: "Please enter a valid URL",
+              },
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <div className="space-y-2">
+                <input
+                  {...field}
+                  type="url"
+                  id="link"
+                  className="w-full"
+                  placeholder="https://example.com"
+                />
+                {error && (
+                  <p className="text-sm font-medium text-destructive">
+                    {error.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+      )}
+
+      {/* Title Input */}
+      <Controller
+        name="title"
+        control={control}
+        rules={{ required: false }}
+        render={({ field, fieldState: { error } }) => (
+          <div className="space-y-2.5">
+            <label
+              htmlFor="title"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Title
+            </label>
+            <input
+              {...field}
+              id="title"
+              className="w-full"
+              placeholder="Add a title to help with search it later"
+            />
+            {error && (
+              <p className="text-sm font-medium text-destructive">
+                {error.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
 
       {/* Tags Input */}
       <TagInput

@@ -62,6 +62,7 @@ export function NewResourceDropdown() {
       type: resourceType,
       url: data.link,
       userMetadata: {
+        title: data.title,
         description: data.description,
         tags: data.tags,
       },

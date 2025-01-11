@@ -17,14 +17,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import {
-  ResourceData,
-  ResourceType,
-  TweetData,
-} from "@/queries/resources/resourceTypes";
+import { ResourceData } from "@/queries/resources/resourceTypes";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
-import { ExternalLink, Loader2, MoreHorizontal } from "lucide-react";
+import {
+  ExternalLink,
+  Loader2,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
 
@@ -34,14 +36,17 @@ interface Props {
   isDeletePending: boolean;
   isMobile: boolean;
   onDelete: () => void;
+  onUpdate: () => void;
 }
 
 export function ResourceCardUI({
   resource,
   index,
-  onDelete,
   isDeletePending,
   isMobile,
+
+  onDelete,
+  onUpdate,
 }: Props) {
   return (
     <motion.div
@@ -53,16 +58,19 @@ export function ResourceCardUI({
     >
       <Card className="group flex h-[250px] w-full flex-col">
         <CardHeader className="flex flex-shrink-0 flex-row items-start justify-between space-y-0 p-3 pt-2">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col items-center gap-6">
             <div className="flex flex-col">
-              {resource.type === ResourceType.TWEET && (
-                <span className="text-sm font-medium">
-                  @{(resource.data as TweetData).authorUsername}
-                </span>
-              )}
+              <h3 className="line-clamp-1 font-medium">{resource.title}</h3>
+
               <time className="text-xs text-muted-foreground">
                 {format(new Date(resource.createdAt), "MMM d, yyyy")}
               </time>
+
+              {/* {resource.type === ResourceType.TWEET && (
+                <span className="text-sm font-medium">
+                  @{(resource.data as TweetData).authorUsername}
+                </span>
+              )} */}
             </div>
           </div>
           <a
@@ -97,6 +105,7 @@ export function ResourceCardUI({
             isDeletePending={isDeletePending}
             onDelete={onDelete}
             isMobile={isMobile}
+            onUpdate={onUpdate}
           />
         </CardFooter>
       </Card>
@@ -109,11 +118,13 @@ function ResourceFooter({
   isDeletePending,
   onDelete,
   isMobile,
+  onUpdate,
 }: {
   resource: ResourceData;
   isDeletePending: boolean;
   isMobile: boolean;
 
+  onUpdate: () => void;
   onDelete: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -169,9 +180,21 @@ function ResourceFooter({
         <DropdownMenuContent>
           <DropdownMenuItem
             disabled={isDeletePending}
-            onClick={onDelete}
-            className="text-red-500 transition-all hover:cursor-pointer dark:text-red-400"
+            className="transition-all hover:cursor-pointer"
+            onSelect={onUpdate}
           >
+            <Pencil className="h-4 w-4" />
+            Edit resource
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={isDeletePending}
+            className="text-red-500 transition-all hover:cursor-pointer dark:text-red-400"
+            onSelect={(e) => {
+              e.preventDefault();
+              onDelete();
+            }}
+          >
+            <Trash2 className="h-4 w-4" />
             Delete resource
             {isDeletePending ? (
               <AnimatePresence>

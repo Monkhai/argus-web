@@ -1,6 +1,7 @@
 export type ResourceMetadata = {
   tags: string[];
   description: string;
+  title: string;
 };
 
 export const resourceType = ["tweet"] as const;
@@ -21,19 +22,22 @@ export type ArticleData = {
 
 export type ResourceData = {
   type: ResourceType;
+  createdAt: string;
   url: string;
   resourceId: string;
   tags: string[];
+  title: string;
   description: string;
-  createdAt: string;
   userId: string;
 
   data: TweetData | ArticleData;
 };
+
 export type ResourceContentForEmbedding = {
   type: ResourceType;
   text: string;
   tags: string[];
+  title: string;
   description: string;
   authorUsername: string;
   authorId: string;
