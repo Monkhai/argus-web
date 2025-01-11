@@ -1,17 +1,16 @@
-'use client'
-import { useAuth } from '@/providers/AuthProvider'
-import { redirect } from 'next/navigation'
+"use client";
+import { useAuth } from "@/providers/AuthProvider";
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuth();
   if (loading) {
-    console.log('loading')
     return (
       <div className="flex h-dvh w-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-transparent" />
       </div>
-    )
+    );
   }
-  if (!user) return redirect('/login')
-  redirect('/home')
+  if (!user) return redirect("/login");
+  redirect("/home");
 }

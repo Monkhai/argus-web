@@ -128,32 +128,34 @@ function ResourceFooter({
             {tag}
           </span>
         ))}
-        <TooltipProvider>
-          <Tooltip delayDuration={0} open={isOpen} onOpenChange={setIsOpen}>
-            <TooltipTrigger
-              onClick={() => {
-                if (isMobile) {
-                  setIsOpen((prev) => !prev);
-                }
-              }}
-              className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground opacity-50 transition-opacity"
-            >
-              + {resource.tags.length - 3}
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="flex max-w-[250px] flex-wrap gap-2">
-                {resource.tags.slice(0).map((tag, index) => (
-                  <span
-                    key={tag + index}
-                    className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        {resource.tags.length > 3 && (
+          <TooltipProvider>
+            <Tooltip delayDuration={0} open={isOpen} onOpenChange={setIsOpen}>
+              <TooltipTrigger
+                onClick={() => {
+                  if (isMobile) {
+                    setIsOpen((prev) => !prev);
+                  }
+                }}
+                className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground opacity-50 transition-opacity"
+              >
+                + {resource.tags.length - 3}
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex max-w-[250px] flex-wrap gap-2">
+                  {resource.tags.slice(0).map((tag, index) => (
+                    <span
+                      key={tag + index}
+                      className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger>

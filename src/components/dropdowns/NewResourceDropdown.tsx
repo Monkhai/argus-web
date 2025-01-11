@@ -9,7 +9,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { toast } from "@/hooks/use-toast";
 import { useCreateResource } from "@/queries/resources/createResource";
 import { ResourceType } from "@/queries/resources/resourceTypes";
-import { PlusCircle } from "lucide-react";
+import { BookOpen, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import ResourceForm, { ResourceFormData } from "../forms/ResourceForm";
 import {
@@ -26,6 +26,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
+import XLogo from "../platform-logos/XLogo";
 
 export function NewResourceDropdown() {
   const [resourceType, setResourceType] = useState<ResourceType>(
@@ -83,8 +84,9 @@ export function NewResourceDropdown() {
                   key={type}
                   onSelect={() => setResourceType(type)}
                 >
-                  <DialogTrigger className="w-full text-left">
+                  <DialogTrigger className="flex w-full items-center justify-between gap-2 text-left">
                     {type}
+                    {resourceTypeIconMap[type]}
                   </DialogTrigger>
                 </DropdownMenuItem>
               ))}
@@ -123,7 +125,10 @@ export function NewResourceDropdown() {
                 key={type}
                 onSelect={() => setResourceType(type)}
               >
-                <DrawerTrigger>{type}</DrawerTrigger>
+                <DrawerTrigger className="flex w-full items-center justify-between gap-2 text-left">
+                  {type}
+                  {resourceTypeIconMap[type]}
+                </DrawerTrigger>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -150,4 +155,9 @@ export function NewResourceDropdown() {
 const labelMap: Record<ResourceType, string> = {
   [ResourceType.TWEET]: "Tweet",
   [ResourceType.ARTICLE]: "Article",
+};
+
+const resourceTypeIconMap: Record<ResourceType, React.ReactNode> = {
+  [ResourceType.TWEET]: <XLogo />,
+  [ResourceType.ARTICLE]: <BookOpen className="!h-4 w-4" />,
 };

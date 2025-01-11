@@ -51,7 +51,7 @@ export function SearchBar() {
   };
 
   return (
-    <section className="sticky top-0 z-50 my-8 flex w-full flex-row items-start justify-between gap-4 px-6">
+    <section className="z-50 mt-8 flex w-full flex-row items-start justify-between gap-4 px-6">
       {!isMobile && (
         <Link
           href={"/home"}
